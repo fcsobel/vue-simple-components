@@ -9,27 +9,39 @@
 <body>    
 
     <div class="container" id="app" style="margin-top: 20px;">
+    
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">
-                        Table Component
-                        <input v-model="context.searchString" placeholder="search" class="mb-1">
-                    </div>
-                    <vue-table-component :context="context"></vue-table-component>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-header">
-                        Edit Component
-                    </div>
+                    <div class="card-header">Cat Management System</div>
                     <div class="card-body">
-                        <vue-edit-component :context="context"></vue-edit-component>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="card">
+                                    <div class="card-header">
+                                        Table Component
+                                        <input v-model="context.searchString" placeholder="search" class="mb-1">
+                                    </div>
+                                    <vue-table-component :context="context"></vue-table-component>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-header">
+                                        Edit Component
+                                    </div>
+                                    <div class="card-body">
+                                        <vue-edit-component :context="context"></vue-edit-component>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
                     </div>
                 </div>
             </div>
         </div>
+    
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -62,10 +74,10 @@
             methods: {
                 async getWorkers() {
                     const workers = [
-                        { name: "Airi Satou", position: "Accountant", office: "Tokyo", age: 33, image: "http://placekitten.com/200/200" },
-                        { name: "Angelica Ramos", position: "Chief Executive Officer (CEO)", office: "London", age: 47, image: "http://placekitten.com/g/201/200" },
-                        { name: "Cedric Kelly", position: "Senior Javascript Developer", office: "Edinburgh", age: 22, image: "http://placekitten.com/202/200" },
-                        { name: "Jennifer Chang", position: "Regional Director", office: "Singapore", age: 28, image: "http://placekitten.com/g/203/200" },
+                        { name: "Oliver", position: "Accountant", office: "Living Room", age: 8, image: "http://placekitten.com/200/200" },
+                        { name: "Milo", position: "Chief Executive Officer (CEO)", office: "Monica's room", age: 7, image: "http://placekitten.com/g/201/200" },
+                        { name: "Cedric", position: "Senior Javascript Developer", office: "Kitchen", age: 5, image: "http://placekitten.com/202/200" },
+                        { name: "Sprinkles", position: "Regional Director", office: "Basement", age: 6, image: "http://placekitten.com/g/203/200" },
                     ];
                     const headers = [
                         { key: "name", value: "Name" },
