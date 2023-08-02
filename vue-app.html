@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vue Component Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>    
+
+    <div class="container" id="app" style="margin-top: 20px;">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header">
+                        Table Component
+                        <input v-model="context.searchString" placeholder="search" class="mb-1">
+                    </div>
+                    <vue-table-component :context="context"></vue-table-component>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header">
+                        Edit Component
+                    </div>
+                    <div class="card-body">
+                        <vue-edit-component :context="context"></vue-edit-component>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <script src="https://unpkg.com/vue@3"></script>
+    
+        
+    <script>
+        const { createApp } = Vue;
+
+        
+        const vueTableComponent = import('./vue-components/vue-table-component.js');
+        const vueEditComponent = import('./vue-components/vue-edit-component.js');
+        const app = createApp({
+            data() {
+                return {
+                    context: {
+                        headers: [],
+                        workers: [],
+                        selectedItem: null,
+                    }
+                }
+            },
+            components: {
+                VueTableComponent: Vue.defineAsyncComponent(() => vueTableComponent),
+                VueEditComponent: Vue.defineAsyncComponent(() => vueEditComponent),
+            },
+            methods: {
+                async getWorkers() {
+                    const workers = [
+                        { name: "Airi Satou", position: "Accountant", office: "Tokyo", age: 33, image: "http://placekitten.com/200/200" },
+                        { name: "Angelica Ramos", position: "Chief Executive Officer (CEO)", office: "London", age: 47, image: "http://placekitten.com/g/201/200" },
+                        { name: "Cedric Kelly", position: "Senior Javascript Developer", office: "Edinburgh", age: 22, image: "http://placekitten.com/202/200" },
+                        { name: "Jennifer Chang", position: "Regional Director", office: "Singapore", age: 28, image: "http://placekitten.com/g/203/200" },
+                    ];
+                    const headers = [
+                        { key: "name", value: "Name" },
+                        { key: "position", value: "Position" },
+                        { key: "office", value: "Office" },
+                        { key: "age", value: "Age" },
+                    ];
+                    this.context.headers = headers;
+                    this.context.workers = workers;
+                    this.context.selectedItem = this.context.workers[0];
+                    this.context.searchString = "";
+                }
+            },
+            mounted() {
+                this.getWorkers();
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>
