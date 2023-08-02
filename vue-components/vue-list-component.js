@@ -13,27 +13,30 @@ const template = `
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(worker,index) in filteredWorkers" v-on:click="context.selectedItem=worker">
+                <tr v-for="(worker,index) in filteredWorkers" v-on:click="context.selectedItem=worker"
+                    :class="{ 'table-success': worker === context.selectedItem }">
                     <td>{{ worker.name }}</td>
                     <td>{{ worker.position }}</td>
                     <td>{{ worker.office }}</td>
                     <td>{{ worker.age }}</td>
-                    <td>
-                        <a href="#" @click.prevent="EditItem(worker)">Edit</a>
-                        <span>|</span>
-                        <a href="#" @click.prevent="DeleteItem(index)">Delete</a>
+                    <td style="text-align: center;">
+                        <a href="#" @click.prevent="EditItem(worker)"><i class="rb-2 fa-solid fa-cat"></i></a>
+                    </td>
+                    <td style="text-align: center;">
+                        <a href="#" @click.prevent="DeleteItem(index)"><i class="rb-2 fa-solid fa-trash"></i></a>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="4"></td>
-                    <td>
-                        <a href="#" @click.prevent="AddItem()">Add</a>
+                    <td style="text-align: center;">
+                        <a href="#" @click.prevent="AddItem()"><i class="fa-solid fa-plus"></i></a>
                     </td>
+                    <td></td>
                 </tr>
             </tbody>
         </table>
     </div>
-
+    
     <!-- Edit Modal -->
     <div id="editModal" class="modal" tabindex="-1">
         <div class="modal-dialog">
@@ -48,7 +51,7 @@ const template = `
                 </div>
             </div>
         </div>
-    </div>    
+    </div>      
 `;
 
 export default {
