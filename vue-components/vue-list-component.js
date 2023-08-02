@@ -13,12 +13,22 @@ const template = `
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="worker in filteredWorkers" v-on:click="context.selectedItem=worker">
+                <tr v-for="(worker,index) in filteredWorkers" v-on:click="context.selectedItem=worker">
                     <td>{{ worker.name }}</td>
                     <td>{{ worker.position }}</td>
                     <td>{{ worker.office }}</td>
                     <td>{{ worker.age }}</td>
-                    <td><a href="#" @click.prevent="EditItem(worker)">Edit</a></td>
+                    <td>
+                        <a href="#" @click.prevent="EditItem(worker)">Edit</a>
+                        <span>|</span>
+                        <a href="#" @click.prevent="DeleteItem(index)">Delete</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4"></td>
+                    <td>
+                        <a href="#" @click.prevent="AddItem()">Add</a>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -29,7 +39,7 @@ const template = `
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Item</h5>
+                    <h5 class="modal-title">Edit Cat</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -50,6 +60,55 @@ export default {
         }
     },
     template: template,
+    components: {
+        VueEditComponent: Vue.defineAsyncComponent(() => import('./vue-edit-component.js')),
+    },
+    //setup() {    },
+    methods: {
+        EditItem(item)
+        {
+            // set current item
+            this.context.selectedItem = item;
+
+            // show modal to edit
+            var myModal = new bootstrap.Modal(document.getElementById('editModal'));
+            myModal.show();
+        },
+        DeleteItem(index)
+        {
+            // remove item at index
+            this.context.workers.splice(index, 1);
+
+            if (index >= this.context.workers.length) 
+            {
+                index = this.context.workers.length - 1;
+            }
+
+            // set current item after delete
+            this.context.selectedItem = this.context.workers[index];
+        },
+        AddItem()
+        {
+            // set current item
+            let offset = Math.floor(Math.random() * 10);
+            let width = 200 + offset;
+            offset = Math.floor(Math.random() * 10);
+            let length = 200 + offset;
+            this.context.selectedItem = { age :1, image : `http://placekitten.com/${length}/${width}`};
+            this.context.workers.push(this.context.selectedItem);
+            // show modal to edit
+            var myModal = new bootstrap.Modal(document.getElementById('editModal'));
+            myModal.show();
+        },
+        setSortColumn(column) {
+            if (this.sortColumn === column) {
+                this.order = this.order === "ASC" ? "DESC" : "ASC";
+            } else {
+                this.order = "ASC";
+                this.sortColumn = column;
+            }
+        },
+    },
     computed: {
         filteredWorkers() {
             const filteredWorkers = this.context.searchString === ""
@@ -78,28 +137,6 @@ export default {
             });
 
             return filteredWorkers;
-        },
-    },
-    components: {
-        VueEditComponent: Vue.defineAsyncComponent(() => import('./vue-edit-component.js')),
-    },
-    methods: {
-        EditItem(item)
-        {
-            // set current item
-            this.context.selectedItem = item;
-
-            // show modal to edit
-            var myModal = new bootstrap.Modal(document.getElementById('editModal'));
-            myModal.show();
-        },
-        setSortColumn(column) {
-            if (this.sortColumn === column) {
-                this.order = this.order === "ASC" ? "DESC" : "ASC";
-            } else {
-                this.order = "ASC";
-                this.sortColumn = column;
-            }
         },
     },
 }
