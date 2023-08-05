@@ -61,7 +61,7 @@
                 return {
                     context: {
                         headers: [],
-                        workers: [],
+                        items: [],
                         selectedItem: null,
                     }
                 }
@@ -72,8 +72,8 @@
                 vueDetailComponent: Vue.defineAsyncComponent(() => vueDetailComponent),
             },
             methods: {
-                async getWorkers() {
-                    const workers = [
+                async getItems() {
+                    const items = [
                         { name: "Oliver", position: "Accountant", office: "Living Room", age: 8, image: "http://placekitten.com/210/200" },
                         { name: "Milo", position: "Chief Executive Officer (CEO)", office: "Monica's room", age: 7, image: "http://placekitten.com/g/200/200" },
                         { name: "Cedric", position: "Senior Javascript Developer", office: "Kitchen", age: 5, image: "http://placekitten.com/202/203" },
@@ -86,13 +86,13 @@
                         { key: "age", value: "Age" },
                     ];
                     this.context.headers = headers;
-                    this.context.workers = workers;
-                    this.context.selectedItem = this.context.workers[0];
+                    this.context.items = items;
+                    this.context.selectedItem = this.context.items[0];
                     this.context.searchString = "";
                 }
             },
             mounted() {
-                this.getWorkers();
+                this.getItems();
             }
         }).mount('#app')
     </script>
