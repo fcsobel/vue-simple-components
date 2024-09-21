@@ -1,0 +1,36 @@
+<div>
+<template id="detail-component-template">
+    <div v-if="context.selectedItem">
+        <div class="col-12">
+            <label for="Name" class="form-label">Name: {{context.selectedItem.name}}</label>
+        </div>
+        <div class="col-12">
+            <label for="Position" class="form-label">Position: {{ context.selectedItem.position }}</label>
+        </div>
+        <div class="col-12">
+            <label for="Office" class="form-label">Office: {{ context.selectedItem.office }}</label>
+        </div>
+        <div class="col-12">
+            <label for="Office" class="form-label">Age: {{ context.selectedItem.age }}</label>
+        </div>
+        <div class="col-12">
+            <img style="width: 100%;" :src="context.selectedItem.image">
+        </div>
+    </div>
+</template>
+</div>
+
+<h1>test1</h1>
+
+<script>
+    console.log('vue-detail-component');
+
+    const detailComponent = {
+        props: ["context"],
+        template: '#detail-component-template',
+        computed: {},
+        methods: {},
+        data() { return {} }
+    };
+    app.component('vue-detail-component', detailComponent);
+</script>

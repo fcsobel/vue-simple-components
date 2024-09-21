@@ -1,0 +1,157 @@
+<div>
+    <h1>test</h1>
+    <template id="list-component-template">
+    <div v-if="context.items.length === 0">No items available.</div>
+    <div v-else>
+        <table class="table table-striped table-bordered table-sm" style="margin:0;">
+            <thead>
+                <tr>
+                    <th v-for="header in context.headers" @click="setSortColumn(header.key)">
+                        {{ header.value }}
+                        <span class="arrow" :class="{ active: this.sortColumn === header.key && this.order === 'ASC' }">&#8593;</span>
+                        <span class="arrow" :class="{ active: this.sortColumn === header.key && this.order === 'DESC' }">&#8595;</span>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item,index) in filteredItems" v-on:click="selectItem(item)"
+                    :class="{ 'table-success': item === context.selectedItem }">
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.position }}</td>
+                    <td>{{ item.office }}</td>
+                    <td>{{ item.age }}</td>
+                    <td style="text-align: center;">
+                        <a href="#" @click.prevent="EditItem(item)"><i class="rb-2 fa-solid fa-cat"></i></a>
+                    </td>
+                    <td style="text-align: center;">
+                        <a href="#" @click.prevent="DeleteItem(index)"><i class="rb-2 fa-solid fa-trash"></i></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4"></td>
+                    <td style="text-align: center;">
+                        <a href="#" @click.prevent="AddItem()"><i class="fa-solid fa-plus"></i></a>
+                    </td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <h1>test</h1>
+    <vue-edit-component :context="context"></vue-edit-component>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Cat</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <vue-edit-component :context="context"></vue-edit-component>
+                    <!--<component :is="vueEditComponent" :context="context" />-->
+                </div>
+            </div>
+        </div>
+    </div>      
+</template>
+</div>
+
+<script>
+    console.log('vue-list-component');
+    const listComponent = {
+        props: ["context"],
+        template: '#list-component-template',
+        data() {
+            return {
+                sortColumn: "",
+                order: "ASC",
+            }
+        },
+        //components: {
+        //    VueEditComponent: Vue.defineAsyncComponent(() => import('./vue-edit-component.js')),
+        //},
+        //setup() {    },
+        methods: {
+            SelectItem(item)
+            {
+                console.log('SelectItem', item);
+                // set current item
+                this.context.selectedItem = item;
+            },
+            EditItem(item) {
+                // set current item
+                this.context.selectedItem = item;
+
+                // show modal to edit
+                var myModal = new bootstrap.Modal(document.getElementById('editModal'));
+                myModal.show();
+            },
+            DeleteItem(index) {
+                // remove item at index
+                this.context.items.splice(index, 1);
+
+                if (index >= this.context.items.length) {
+                    index = this.context.items.length - 1;
+                }
+
+                // set current item after delete
+                this.context.selectedItem = this.context.items[index];
+            },
+            AddItem() {
+                // set current item
+                let offset = Math.floor(Math.random() * 10);
+                let width = 200 + offset;
+                offset = Math.floor(Math.random() * 10);
+                let length = 200 + offset;
+                this.context.selectedItem = { age: 1, image: `http://placekitten.com/${length}/${width}` };
+                this.context.items.push(this.context.selectedItem);
+                // show modal to edit
+                var myModal = new bootstrap.Modal(document.getElementById('editModal'));
+                myModal.show();
+            },
+            setSortColumn(column) {
+                if (this.sortColumn === column) {
+                    this.order = this.order === "ASC" ? "DESC" : "ASC";
+                } else {
+                    this.order = "ASC";
+                    this.sortColumn = column;
+                }
+            },
+        },
+        computed: {
+            filteredItems() {
+                const filteredItems = this.context.searchString === ""
+                    ? this.context.items
+                    : this.context.items.filter(wo => Object.values(wo).join("").indexOf(this.context.searchString) !== -1);
+
+                const column = this.sortColumn
+                const order = this.order;
+
+                filteredItems.sort(function (a, b) {
+                    var nameA = a[column] + "".toUpperCase();
+                    var nameB = b[column] + "".toUpperCase();
+                    if (order === "DESC" && nameA > nameB) {
+                        return -1;
+                    }
+                    if (order === "DESC" && nameA < nameB) {
+                        return 1;
+                    }
+                    if (nameA < nameB) {
+                        return -1;
+                    }
+                    if (nameA > nameB) {
+                        return 1;
+                    }
+                    return 0;
+                });
+
+                return filteredItems;
+            },
+        },
+    };
+    app.component('vue-list-component', listComponent);
+</script>
