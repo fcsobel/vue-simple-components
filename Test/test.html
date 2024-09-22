@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petite Vue Example with Props</title>
+    <script type="module">
+        import myComponent from './components/counter.js';
+
+        PetiteVue.createApp({
+            myComponent: myComponent({ message: 'Hello from Props!' })
+        }).mount();
+    </script>
+</head>
+<body>
+    <div v-scope="myComponent">
+        <p>{{ message }}</p>
+        <button @click="increment">Increment</button>
+        <p>Count: {{ count }}</p>
+    </div>
+</body>
+</html>

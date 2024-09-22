@@ -42,4 +42,5 @@ const app = createApp({
 include('./components/vue-edit-component.html',     document.currentScript); 
 include('./components/vue-detail-component.html',   document.currentScript);
 include('./components/vue-list-component.html',     document.currentScript);
+
 app.mount('#app');

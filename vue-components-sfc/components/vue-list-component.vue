@@ -6,8 +6,8 @@
                 <tr>
                     <th v-for="header in context.headers" @click="setSortColumn(header.key)">
                         {{ header.value }}
-                        <span class="arrow" :class="{ active: this.sortColumn === header.key && this.order === 'ASC' }">&#8593;</span>
-                        <span class="arrow" :class="{ active: this.sortColumn === header.key && this.order === 'DESC' }">&#8595;</span>
+                        <span class="arrow" :class="{ active: sortColumn === header.key && order === 'ASC' }">&#8593;</span>
+                        <span class="arrow" :class="{ active: sortColumn === header.key && order === 'DESC' }">&#8595;</span>
                     </th>
                     <th></th>
                 </tr>
@@ -46,8 +46,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!--<vue-edit-component :context="context"></vue-edit-component>-->
-                    <component :is="vueEditComponent" :context="context" />
+                    <vue-edit-component :context="context"></vue-edit-component>
+                    <!--<component :is="vueEditComponent" :context="context" />-->
                 </div>
             </div>
         </div>
@@ -55,7 +55,9 @@
 </template>
 
 <script setup>
-    import vueEditComponent from './vue-edit-component.vue';
+    //// Local Component Registration (not needed when global)
+    //import vueEditComponent from './vue-edit-component.vue';
+
     //const { createApp } = Vue;
     //const { loadModule } = window['vue3-sfc-loader'];
     //let options = sfcOptions;
@@ -72,20 +74,18 @@ export default {
         }
     },
     //template: template, // Not used in SFC component
-    components: {
-        VueEditComponent: vueEditComponent
-    },
+    //components: {
+      //  VueEditComponent: vueEditComponent
+    //},
     //setup() {    },
     methods: {
         SelectItem(item)
         {
-            console.log('SelectItem', item);
             // set current item
             this.context.selectedItem = item;
         },
         EditItem(item)
         {
-            console.log('EditItem');
             // set current item
             this.context.selectedItem = item;
 
@@ -95,7 +95,6 @@ export default {
         },
         DeleteItem(index)
         {
-            console.log('DeleteItem');
             if (index == 0)            
             {
                 // get next item
@@ -106,8 +105,6 @@ export default {
                 // get previos item
                 var item = this.context.items[index - 1];
             }            
-
-            console.log(item);
 
             // remove item at index
             this.context.items.splice(index, 1);
@@ -122,7 +119,7 @@ export default {
             let width = 200 + offset;
             offset = Math.floor(Math.random() * 10);
             let length = 200 + offset;
-            this.context.selectedItem = { age :1, image : `http://placekitten.com/${length}/${width}`};
+            this.context.selectedItem = { age :1, image : `http://placecats.com/${length}/${width}`};
             this.context.items.push(this.context.selectedItem);
             // show modal to edit
             var myModal = new bootstrap.Modal(document.getElementById('editModal'));

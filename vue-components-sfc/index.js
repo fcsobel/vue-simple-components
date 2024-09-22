@@ -14,19 +14,15 @@ const app = createApp({
             }
         }
     },
-    components: {
-        VueListComponent: Vue.defineAsyncComponent(() => vueListComponent),
-        VueEditComponent: Vue.defineAsyncComponent(() => vueEditComponent),
-        vueDetailComponent: Vue.defineAsyncComponent(() => vueDetailComponent),
-    },
+    // local component registration
+    // components: {
+    //     VueListComponent: Vue.defineAsyncComponent(() => vueListComponent),
+    //     VueEditComponent: Vue.defineAsyncComponent(() => vueEditComponent),
+    //     vueDetailComponent: Vue.defineAsyncComponent(() => vueDetailComponent),
+    // },
     methods: {
         async getItems() {
-            const items = [
-                { name: "Oliver", position: "Accountant", office: "Living Room", age: 8, image: "http://placecats.com/210/200" },
-                { name: "Milo", position: "Chief Executive Officer (CEO)", office: "Monica's room", age: 7, image: "http://placecats.com/g/200/200" },
-                { name: "Cedric", position: "Senior Javascript Developer", office: "Kitchen", age: 5, image: "http://placecats.com/202/203" },
-                { name: "Sprinkles", position: "Regional Director", office: "Basement", age: 6, image: "http://placecats.com/g/203/200" },
-            ];
+
             const headers = [
                 { key: "name", value: "Name" },
                 { key: "position", value: "Position" },
@@ -34,12 +30,24 @@ const app = createApp({
                 { key: "age", value: "Age" },
             ];
             this.context.headers = headers;
-            this.context.items = items;
-            this.context.selectedItem = this.context.items[0];
             this.context.searchString = "";
+
+            fetch('/data/users.json')
+                .then(res => res.json())
+                .then(items => {
+                    this.context.items = items;
+                    this.context.selectedItem = this.context.items[0];
+                });
         }
     },
     mounted() {
         this.getItems();
     }
-}).mount('#app')
+}); //.mount('#app')
+
+// global registration - can be used anywhere
+app.component('vue-list-component', Vue.defineAsyncComponent(() => vueListComponent)); 
+app.component('vue-edit-component', Vue.defineAsyncComponent(() => vueEditComponent)); 
+app.component('vue-detail-component', Vue.defineAsyncComponent(() => vueDetailComponent)); 
+
+app.mount('#app');
