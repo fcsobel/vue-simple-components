@@ -102,7 +102,7 @@ export default {
             let width = 200 + offset;
             offset = Math.floor(Math.random() * 10);
             let length = 200 + offset;
-            this.context.selectedItem = { age :1, image : `http://placecats.com/${length}/${width}`};
+            this.context.selectedItem = { age :1, image : `https://placecats.com/${length}/${width}`};
             this.context.items.push(this.context.selectedItem);
             // show modal to edit
             var myModal = new bootstrap.Modal(document.getElementById('editModal'));
