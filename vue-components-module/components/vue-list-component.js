@@ -1,4 +1,5 @@
-import Edit from './vue-edit-component.js'
+//// local component registration (not needed when global)
+// import Edit from './vue-edit-component.js'
 
 const template = `
     <div v-if="context.items.length === 0">No items available.</div>
@@ -65,9 +66,10 @@ export default {
         }
     },
     template: template,
-    components: {
-        'vue-edit-component': Edit,
-        },
+    //// local component registration (not needed when global)
+    // components: {
+    //     'vue-edit-component': Edit,
+    //     },
     //setup() {    },
     methods: {
         SelectItem(item)

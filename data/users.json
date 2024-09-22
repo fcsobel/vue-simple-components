@@ -3,6 +3,6 @@
     { "name": "Milo",       "position": "Chief Executive Officer (CEO)",    "office": "Monica's room",   "age": 7, "image": "http://placecats.com/g/200/200" },
     { "name": "Cedric",     "position": "Senior Javascript Developer",      "office": "Kitchen",         "age": 5, "image": "http://placecats.com/202/203" },
     { "name": "Sprinkles",  "position": "Awake",                            "office": "Basement",        "age": 6, "image": "http://placecats.com/g/203/200" },
-    { "name": "Bing",       "position": "Sleeping",                         "office": "Basement",        "age": 5, "image": "http://placecats.com/g/203/200" }
+    { "name": "Bing",       "position": "Sleeping",                         "office": "Office",        "age": 5, "image": "http://placecats.com/g/201/200" }
 
 ]
