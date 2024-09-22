@@ -22,10 +22,10 @@ const app = createApp({
     methods: {
         async getItems() {
             const items = [
-                { name: "Oliver", position: "Accountant", office: "Living Room", age: 8, image: "http://placekitten.com/210/200" },
-                { name: "Milo", position: "Chief Executive Officer (CEO)", office: "Monica's room", age: 7, image: "http://placekitten.com/g/200/200" },
-                { name: "Cedric", position: "Senior Javascript Developer", office: "Kitchen", age: 5, image: "http://placekitten.com/202/203" },
-                { name: "Sprinkles", position: "Sleeping", office: "Basement", age: 6, image: "http://placekitten.com/g/203/200" },
+                { name: "Oliver", position: "Accountant", office: "Living Room", age: 8, image: "http://placecats.com/210/200" },
+                { name: "Milo", position: "Chief Executive Officer (CEO)", office: "Monica's room", age: 7, image: "http://placecats.com/g/200/200" },
+                { name: "Cedric", position: "Senior Javascript Developer", office: "Kitchen", age: 5, image: "http://placecats.com/202/203" },
+                { name: "Sprinkles", position: "Sleeping", office: "Basement", age: 6, image: "http://placecats.com/g/203/200" },
             ];
             const headers = [
                 { key: "name", value: "Name" },
