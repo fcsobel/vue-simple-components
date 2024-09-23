@@ -1,6 +1,6 @@
 export default {
-    template: '#portfolio-detail-template',
-     props: ["context"],
+    template: '#vue-detail-component',
+    props: ["context"],
     data() {
         return {}
     },

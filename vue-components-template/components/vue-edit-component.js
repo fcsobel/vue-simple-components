@@ -1,6 +1,6 @@
 export default {
-    template: '#portfolio-edit-template',
-     props: ["context"],
+    template: '#vue-edit-component',
+    props: ["context"],
     data() {
         return {}
     },

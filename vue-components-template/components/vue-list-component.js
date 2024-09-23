@@ -1,6 +1,6 @@
 export default {
-    template: '#portfolio-list-template',
-     props: ["context"],
+    template: '#vue-list-component',
+    props: ["context"],
     data() {
         return {
             sortColumn: "",
