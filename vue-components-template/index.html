@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Petite Vue Components</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .arrow { display:none; }    
+        .arrow.active { display:inline; }    
+    </style>
+</head>
+
+<body>
+    <div v-scope="" class="container" id="app" style="margin-top: 20px;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header"><a href="/"><i class="rb-2 fa-solid fa-home"></i></a> Cat Management</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="card">
+                                    <div class="card-header">List Component
+                                        <input v-model="context.searchString" placeholder="search" class="mb-1">
+                                    </div>
+                                    <div v-scope="List({ initialCount: 2, context: context })" @vue:mounted="mounted"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card">
+                                    <div class="card-header">Detail Component</div>
+                                    <div class="card-body">
+                                        <div v-scope="Detail({ context: context })" @vue:mounted="mounted"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <template id="vue-edit-component">
+        <div v-if="context.selectedItem">
+            <div class="col-12">
+                <label for="Name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="inputAddress" placeholder="Name" v-model="context.selectedItem.name">
+            </div>
+            <div class="col-12">
+                <label for="Position" class="form-label">Position</label>
+                <input type="text" class="form-control" id="inputAddress" placeholder="Position" v-model="context.selectedItem.position">
+            </div>
+            <div class="col-12">
+                <label for="Office" class="form-label">Office</label>
+                <input type="text" class="form-control" id="inputAddress" placeholder="Office" v-model="context.selectedItem.office">
+            </div>
+            <div class="col-12">
+                <label for="Age" class="form-label">Age</label>
+                <input type="text" class="form-control" id="inputAddress" placeholder="Age" v-model="context.selectedItem.age">
+            </div>
+            <div class="col-12">
+                <label for="Image" class="form-label">Image</label>
+                <input type="text" class="form-control" id="inputAddress" placeholder="Image" v-model="context.selectedItem.image">
+            </div>
+            <div class="col-12">
+                <label for="Image" class="form-label">Preview</label>
+                <div>
+                    <img style="width: 50px;" :src="context.selectedItem.image">
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="vue-detail-component">
+        <div v-if="context.selectedItem">
+            <div class="col-12">
+                <label for="Name" class="form-label">Name: {{context.selectedItem.name}}</label>
+            </div>
+            <div class="col-12">
+                <label for="Position" class="form-label">Position: {{ context.selectedItem.position }}</label>
+            </div>
+            <div class="col-12">
+                <label for="Office" class="form-label">Office: {{ context.selectedItem.office }}</label>
+            </div>
+            <div class="col-12">
+                <label for="Office" class="form-label">Age: {{ context.selectedItem.age }}</label>
+            </div>
+            <div class="col-12">
+                <img style="width: 100%;" :src="context.selectedItem.image">
+            </div>
+        </div>
+    </template>
+
+    <template id="vue-list-component">
+        <div v-if="context.items.length === 0">No items available.</div>
+        <div v-else>
+            <table class="table table-striped table-bordered table-sm" style="margin:0;">
+                <thead>
+                    <tr>
+                        <th v-for="header in context.headers" @click="setSortColumn(header.key)"> {{ header.value }}
+                            <span class="arrow" :class="{ active: sortColumn === header.key && order === 'ASC' }">&#8593;</span>
+                            <span class="arrow" :class="{ active: sortColumn === header.key && order === 'DESC' }">&#8595;</span>
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item,index) in filteredItems()" v-on:click="SelectItem(item)"
+                        :class="{ 'table-success': item === context.selectedItem }">
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.position }}</td>
+                        <td>{{ item.office }}</td>
+                        <td>{{ item.age }}</td>
+                        <td style="text-align: center;">
+                            <a href="#" @click.stop.prevent="EditItem(item)"><i class="rb-2 fa-solid fa-cat"></i></a>
+                        </td>
+                        <td style="text-align: center;">
+                            <a href="#" @click.stop.prevent="DeleteItem(index)"><i class="rb-2 fa-solid fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4"></td>
+                        <td style="text-align: center;">
+                            <a href="#" @click.stop.prevent="AddItem()"><i class="fa-solid fa-plus"></i></a>
+                        </td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Edit Modal -->
+        <div id="editModal" class="modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Cat</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div v-scope="Edit({ context: context })" @vue:mounted="mounted"></div>
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </template>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <!-- <script src="https://unpkg.com/petite-vue?module"></script> -->
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="index.js" type="module"></script>
+
+</body>
+
+</html>
