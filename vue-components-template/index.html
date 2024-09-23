@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <div v-scope="" class="container" id="app" style="margin-top: 20px;">
+    <div class="container" id="app" style="margin-top: 20px;">
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -26,23 +26,24 @@
                                     <div class="card-header">List Component
                                         <input v-model="context.searchString" placeholder="search" class="mb-1">
                                     </div>
-                                    <div v-scope="List({ initialCount: 2, context: context })" @vue:mounted="mounted"></div>
+                                    <vue-list-component v-bind:context="context"></vue-list-component>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="card">
                                     <div class="card-header">Detail Component</div>
                                     <div class="card-body">
-                                        <div v-scope="Detail({ context: context })" @vue:mounted="mounted"></div>
+                                        <vue-detail-component v-bind:context="context"></vue-detail-component>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>    
                     </div>
                 </div>
             </div>
-        </div>
+        </div>         
     </div>
+
 
     <template id="vue-edit-component">
         <div v-if="context.selectedItem">
@@ -101,7 +102,8 @@
             <table class="table table-striped table-bordered table-sm" style="margin:0;">
                 <thead>
                     <tr>
-                        <th v-for="header in context.headers" @click="setSortColumn(header.key)"> {{ header.value }}
+                        <th v-for="header in context.headers" @click="setSortColumn(header.key)">
+                            {{ header.value }}
                             <span class="arrow" :class="{ active: sortColumn === header.key && order === 'ASC' }">&#8593;</span>
                             <span class="arrow" :class="{ active: sortColumn === header.key && order === 'DESC' }">&#8595;</span>
                         </th>
@@ -109,7 +111,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(item,index) in filteredItems()" v-on:click="SelectItem(item)"
+                    <tr v-for="(item,index) in filteredItems" v-on:click="SelectItem(item)"
                         :class="{ 'table-success': item === context.selectedItem }">
                         <td>{{ item.name }}</td>
                         <td>{{ item.position }}</td>
@@ -142,16 +144,18 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div v-scope="Edit({ context: context })" @vue:mounted="mounted"></div>
+                        <vue-edit-component :context="context"></vue-edit-component>
+                        <!--<component :is="vueEditComponent" :context="context" />-->
                     </div>
                 </div>
             </div>
         </div>    
-    </template>
+    </template>    
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <!-- <script src="https://unpkg.com/petite-vue?module"></script> -->
-    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://unpkg.com/vue@3"></script> 
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.0.11/vue.global.js"></script>-->
     <script src="index.js" type="module"></script>
 
 </body>
